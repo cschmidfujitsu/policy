@@ -1,0 +1,39 @@
+{
+ "properties": {
+  "displayName": "Allowed resource types",
+  "policyType": "Custom",
+  "mode": "Indexed",
+  "description": "This policy enables you to specify the resource types that your organization can deploy.",
+  "metadata": {
+   "category": "General",
+   "createdBy": "af66f074-6530-46d5-8c8f-be22cce04296",
+   "createdOn": "2021-10-12T12:21:50.390817Z",
+   "updatedBy": null,
+   "updatedOn": null
+  },
+  "parameters": {
+   "listOfResourceTypesAllowed": {
+    "type": "Array",
+    "metadata": {
+     "displayName": "Allowed resource types",
+     "description": "The list of resource types that can be deployed.",
+     "strongType": "resourceTypes"
+    }
+   }
+  },
+  "policyRule": {
+   "if": {
+    "not": {
+     "field": "type",
+     "in": "[parameters('listOfResourceTypesAllowed')]"
+    }
+   },
+   "then": {
+    "effect": "deny"
+   }
+  }
+ },
+ "id": "/providers/Microsoft.Management/managementGroups/ARCH03-landingzones/providers/Microsoft.Authorization/policyDefinitions/c5b5623a-4ab7-413b-abc8-7a7fab904ded",
+ "type": "Microsoft.Authorization/policyDefinitions",
+ "name": "c5b5623a-4ab7-413b-abc8-7a7fab904ded"
+}

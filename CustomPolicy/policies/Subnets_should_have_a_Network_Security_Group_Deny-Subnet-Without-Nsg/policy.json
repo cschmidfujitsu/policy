@@ -1,0 +1,67 @@
+{
+ "properties": {
+  "displayName": "Subnets should have a Network Security Group",
+  "policyType": "Custom",
+  "mode": "All",
+  "description": "This policy denies the creation of a subsnet with out an Network Security Group. NSG help to protect traffic across subnet-level.",
+  "metadata": {
+   "version": "1.1.0",
+   "category": "Network",
+   "createdBy": "45b62c86-f0c2-4a03-89e2-c149190b4d7a",
+   "createdOn": "2021-10-04T13:38:03.5513956Z",
+   "updatedBy": null,
+   "updatedOn": null
+  },
+  "parameters": {
+   "effect": {
+    "type": "String",
+    "metadata": {
+     "displayName": "Effect",
+     "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+     "Audit",
+     "Deny",
+     "Disabled"
+    ],
+    "defaultValue": "Deny"
+   },
+   "excludedSubnets": {
+    "type": "Array",
+    "metadata": {
+     "displayName": "Excluded Subnets",
+     "description": "Array of subnet names that are excluded from this policy"
+    },
+    "defaultValue": [
+     "GatewaySubnet",
+     "AzureFirewallSubnet",
+     "AzureFirewallManagementSubnet"
+    ]
+   }
+  },
+  "policyRule": {
+   "if": {
+    "allOf": [
+     {
+      "field": "type",
+      "equals": "Microsoft.Network/virtualNetworks/subnets"
+     },
+     {
+      "field": "name",
+      "notIn": "[parameters('excludedSubnets')]"
+     },
+     {
+      "field": "Microsoft.Network/virtualNetworks/subnets/networkSecurityGroup.id",
+      "exists": "false"
+     }
+    ]
+   },
+   "then": {
+    "effect": "[parameters('effect')]"
+   }
+  }
+ },
+ "id": "/providers/Microsoft.Management/managementGroups/ARCH03/providers/Microsoft.Authorization/policyDefinitions/Deny-Subnet-Without-Nsg",
+ "type": "Microsoft.Authorization/policyDefinitions",
+ "name": "Deny-Subnet-Without-Nsg"
+}
